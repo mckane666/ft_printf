@@ -15,13 +15,13 @@ char	*ft_ftoa(double n) // .05 ??precision 0
 	str = ft_strdup((char *)ft_itoa(in));
 	str = ft_strjoin(str, ".");
 
-	str = ft_strjoin(str, (char *)ft_itoa(fn + 1));
-	printf("%s", str);
+	str = ft_strjoin(str, (char *)ft_itoa(fn));
+	ft_putstr(str);
 	return (0);
 }
 
-int main()
-{
-	ft_ftoa(10.70);
-	printf("\n%.0f", 1.5);
-}
+// int main()
+// {
+// 	ft_ftoa(10.70);
+// 	printf("\n%.0f", 1.5);
+// }
