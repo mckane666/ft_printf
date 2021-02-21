@@ -19,9 +19,14 @@
 # include <stdio.h>
 #include <string.h>
 
+#define CONVERSIONS "cspdiuxX%"
+#define FLAGS "-0.*"
+
 /*
 ** 1st part
 */
+char	*ft_ftoa(double n);
+int	ft_printf(const char *format, ...);
 
 /*
 ** bonus part
