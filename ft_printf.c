@@ -34,7 +34,6 @@ char	*ft_whitestaces(char *str, char flag, int n)
 	}
 	else
 		return (str);
-	printf("%s", temp);
 	return (temp);
 }
 
@@ -59,14 +58,14 @@ int	ft_printf(const char *format, ...) /** "qualquer coisa %s",...
 	{
 		if (*format == '%') /** conta os % **/
 		{
-			get_args = ft_strdup((char *)&*format);
 			format++;
+			get_args = ft_strdup((char *)&*format);
 			cont2++;
 			if (*format == '%')
 				ft_putchar('%');
 			// if (ft_strchr(FLAGS, *format))
 			// 	printf("temos flag\n");
-			// if (ft_strchr(FLAGS, *format))
+			// if (ft_strchr(CONVERSION, *format))
 			// 	printf("temos conversion\n");
 			if (*format == 's')
 			{
@@ -93,22 +92,24 @@ int	ft_printf(const char *format, ...) /** "qualquer coisa %s",...
 				ft_putchar((char)c);
 			}
 		}
-		else
-		{
-			ft_putchar(*format);
-			cont3++;
-		}
+		// else
+		// {
+		// 	ft_putchar(*format);
+		// 	cont3++;
+		// }
 		format++;
 	}
 	va_end(ap);
-	//printf("|->%s\n", get_args);
+	printf("\n->%s\n", get_args);
 	return (cont3);
 }
 
 int	main(void)
 {
 	char *flag = "-0.*"; 
-	ft_whitestaces("ola",flag[0], 5);
+	printf("%s\n", ft_whitestaces("ola",flag[0], 5));
+	printf("%s\n", ft_whitestaces("ola",'+', 2));
+	//ft_whitestaces("ola","+", 5);
 	ft_printf("%-0.5f#*s\n", "ola");
 	//ft_printf("%-0.5f#*s%.5f*1c\n\n", "ola", 'c');
 	// ft_printf("--> %s\n--> %c\n", "ola", 'c');
