@@ -6,121 +6,98 @@
 /*   By: jhenriqu <jhenriqu@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 11:30:28 by jhenriqu          #+#    #+#             */
-/*   Updated: 2021/02/10 18:52:58 by jhenriqu         ###   ########.fr       */
+/*   Updated: 2021/02/03 18:19:06 by jhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+ #include "ft_printf.h"
 #include "libft/libft.h"
 
-char	*ft_whitestaces(char *str, char flag, int n)
+void	ft_init_printf_flags(t_printf *pf)
 {
-	char *temp;
-	int i;
-	int j;
+	pf->point = 0;
+	pf->minus = 0;
+	pf->ast = 0;
+	pf->zero = 0;
+	pf->str_len = 0;
+	pf->width = 0;
+	pf->precision = 0;
+}
 
-	i = 0;
-	j = 0;
-	if (ft_strlen(str) < n)
-	{
-		temp = ft_calloc(sizeof(char), ft_strlen(str) + n + 1);
-		while (str[j] && (ft_strchr(FLAGS, flag)))
-			temp[i++] = str[j++];
-		while (n-- > ft_strlen(str))
-			temp[i++] = 'i';
-		while (str[j] && (!ft_strchr(FLAGS, flag)))
-			temp[i++] = str[j++];
-		temp[i] = 0;
-	}
+void	ft_save_ast(t_printf *pf, va_list ap)
+{
+	pf->ast = 1;
+	if (ft_strchr(".", pf->get_args[pf->index - 1]))
+		pf->precision = va_arg(ap, int);
 	else
-		return (str);
-	return (temp);
+	{
+		pf->width = va_arg(ap, int);
+		if (pf->width < 0)
+		{	
+			pf->width = pf->width * -1;
+			pf->minus = 1;
+		}
+	}
+}
+
+void	ft_flags(t_printf *pf, va_list ap)
+{
+	while (!ft_strchr(CONVERSIONS, pf->get_args[pf->index]))
+	{
+		if (ft_strchr("-", pf->get_args[pf->index]))
+			pf->minus = 1;
+		else if (ft_strchr(".", pf->get_args[pf->index]))
+			pf->point = 1;
+		else if (ft_strchr("*", pf->get_args[pf->index])) //
+			ft_save_ast(pf, ap);
+		else if (ft_strchr("0", pf->get_args[pf->index]))
+		 	pf->zero = 1;
+		else if (ft_strchr(WIDTH, pf->get_args[pf->index]) && pf->width <= 0 && !pf->point)
+		 	pf->width = ft_atoi(&pf->get_args[pf->index]); //
+		else if (ft_strchr(WIDTH, pf->get_args[pf->index]) && pf->point)
+		 	pf->precision = ft_atoi(&pf->get_args[pf->index]); //
+		pf->index++;
+	}
+	printf("\nPreci = %d widht = %d index = %d minus = %d point = %d zero = %d ast = %d\n",pf->precision, pf->width, pf->index, pf->minus, pf->point, pf->zero, pf->ast);
+}
+
+void	ft_parse(t_printf *pf, va_list ap)
+{
+	if (ft_strchr(SPECIFIERS, pf->get_args[pf->index]))
+		ft_flags(pf, ap);
+	if (ft_strchr(CONVERSIONS, pf->get_args[pf->index]))
+		ft_is_str(pf, ap);//ft_conversions();
 }
 
 int	ft_printf(const char *format, ...) /** "qualquer coisa %s",...
 %[flags][width][.precision][size]type **/
 {
+	t_printf pf;
 	va_list	ap;
-	int		i; //struct??
-	double	d;
-	int		cont;
-	int		cont2;
-	int		cont3;
-	int		c;
-	char	*s;
-	char	*get_args;
-
-	cont = 0;
-	cont2 = 0;
-	cont3 = 0;
-	va_start(ap, *format);
-	while (*format != '\0')
+	ft_init_printf_flags(&pf);
+	pf.index = 0;
+	pf.cont = 0;
+	pf.get_args = (char *)format;
+	va_start(ap, format);
+	while (format[pf.index] != '\0')
 	{
-		if (*format == '%') /** conta os % **/
+		if (format[pf.index] == '%')
 		{
-			format++;
-			get_args = ft_strdup((char *)&*format);
-			cont2++;
-			if (*format == '%')
+			pf.index++;
+			if (format[pf.index] == '%')
 				ft_putchar('%');
-			// if (ft_strchr(FLAGS, *format))
-			// 	printf("temos flag\n");
-			// if (ft_strchr(CONVERSION, *format))
-			// 	printf("temos conversion\n");
-			if (*format == 's')
-			{
-				s = va_arg(ap, char *);
-				cont3 += ft_strlen(s) - 1; /** cont chars - 1 % **/
-				ft_putstr(s);
-			}
-			else if (*format == 'd')
-			{
-				i = va_arg(ap, int);
-				cont++;
-				ft_putstr(ft_itoa(i));
-			}
-			else if (*format == 'f')
-			{
-				d = va_arg(ap, double);
-				cont++;
-				ft_putstr(ft_ftoa(d));
-			}
-			else if (*format == 'c')
-			{
-				c = va_arg(ap, int);
-				cont++;
-				ft_putchar((char)c);
-			}
+			else
+				ft_parse(&pf, ap);
 		}
-		// else
-		// {
-		// 	ft_putchar(*format);
-		// 	cont3++;
-		// }
-		format++;
+		else
+		{
+			ft_putchar(format[pf.index]);
+			pf.cont++;
+		}
+		pf.index++;
 	}
 	va_end(ap);
-	printf("\n->%s\n", get_args);
-	return (cont3);
-}
-
-int	main(void)
-{
-	char *flag = "-0.*"; 
-	printf("%s\n", ft_whitestaces("ola",flag[0], 5));
-	printf("%s\n", ft_whitestaces("ola",'+', 2));
-	//ft_whitestaces("ola","+", 5);
-	ft_printf("%-0.5f#*s\n", "ola");
-	//ft_printf("%-0.5f#*s%.5f*1c\n\n", "ola", 'c');
-	// ft_printf("--> %s\n--> %c\n", "ola", 'c');
-	// ft_printf("ola\n");
-	// ft_printf("%%");
-	// ft_printf("\n\n%d %c %f %f\n", 3, 'a', 1.999, 4.25);
-	// ft_printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n",' ','!','"','#','$','%','&','\'','(',')','*','+',',','-','.','/','0','1','2','3','4','5','6','7','8','9',':',';','<','=','>','?','@','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','[','\\',']','^','_','`','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','{','|','}','~','');
-	// ft_printf("%c%c%c%c%c%c\n",(char)1,(char)2,(char)3,(char)4,(char)5,(char)10);
-	// ft_printf("hello, %s.\n", "gavin");
-	// int i = ft_printf("%s len-->", "ola mundo");
-	// ft_printf("%d\n", i);
-	// int j = printf("%s len-->", "ola mundo");
-	// printf("%d", j);
+	return (pf.cont);
 }

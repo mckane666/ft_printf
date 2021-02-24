@@ -6,36 +6,42 @@
 #    By: jhenriqu <jhenriqu@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/12 11:26:37 by jhenriqu          #+#    #+#              #
-#    Updated: 2021/01/08 14:12:44 by jhenriqu         ###   ########.fr        #
+#    Updated: 2021/02/16 14:30:54 by jhenriqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-
-NAME = printflibft.a
-CC = gcc
+NAME = libftprintf.a
+HEADER	= printf.h
 CFLAGS = -Wall -Wextra -Werror
+OBJS = $(SRCS:%.c=%.o)
+OBJS_BONUS = $(SRCS_BONUS:%.c=%.o)
+AR = ar -rcsv
 
-SRCS = ft_printf.c
+SRCS = ft_printf.c ft_flags.c
 
-SRCS_bonus = 
+SRCS_BONUS =
 
-INCLUDE = 
 
-OBJ = ft_*.o
+all: $(NAME)
 
-.PHONY: all
-all:$(NAME)
-$(NAME):
+$(NAME): $(OBJS)
 	make bonus -C ./libft
 	cp libft/libft.a $(NAME)
-	$(CC) -c $(CFLAGS) $(SRCS)
-	ar -rcs $(NAME) $(OBJ)
+	$(AR) $(NAME) $(OBJS)
+
+
+%.o: %.c
+	gcc $(CFLAGS) -include $(HEADER) -c $< -o $@
 
 clean:
 	make clean -C ./libft
-	rm -rf $(OBJ)
+	rm -rf ft_*.o
+
 fclean: clean
-	make clean -C ./libft
-	rm -rf $(NAME)
+	make fclean -C ./libft
+	rm -f $(NAME)
+
 
 re: fclean all
+
+.PHONY:		all clean fclean re
