@@ -48,8 +48,10 @@ void	ft_flags(t_printf *pf, va_list ap)
 		else if (ft_strchr(".", pf->get_args[pf->index]))
 		{
 			if (!ft_strchr(WIDTH, pf->get_args[pf->index + 1]))
+			{
 				pf->precision = 0;
-			pf->point = 1;
+				pf->zero = 1;
+			}
 		}
 		else if (ft_strchr("*", pf->get_args[pf->index]))
 			ft_save_ast(pf, ap);
