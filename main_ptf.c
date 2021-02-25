@@ -16,4 +16,3 @@ int	main(void)
 	printf("\n\n");
 	//printf("ft_printf = %d\nprintf = %d", c, d);
 	
-}
