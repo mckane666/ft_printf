@@ -46,7 +46,11 @@ void	ft_flags(t_printf *pf, va_list ap)
 		if (ft_strchr("-", pf->get_args[pf->index]))
 			pf->minus = 1;
 		else if (ft_strchr(".", pf->get_args[pf->index]))
+		{
+			if (!ft_strchr(WIDTH, pf->get_args[pf->index + 1]))
+				pf->precision = 0;
 			pf->point = 1;
+		}
 		else if (ft_strchr("*", pf->get_args[pf->index]))
 			ft_save_ast(pf, ap);
 		else if (ft_strchr("0", pf->get_args[pf->index]))
@@ -58,7 +62,7 @@ void	ft_flags(t_printf *pf, va_list ap)
 			pf->precision = ft_atoi(&pf->get_args[pf->index]);
 		pf->index++;
 	}
-	printf("\nPreci = %d widht = %d index = %d minus = %d point = %d zero = %d ast = %d\n", pf->precision, pf->width, pf->index, pf->minus, pf->point, pf->zero, pf->ast);
+	//printf("\nPreci = %d widht = %d index = %d minus = %d point = %d zero = %d ast = %d\n", pf->precision, pf->width, pf->index, pf->minus, pf->point, pf->zero, pf->ast);
 }
 
 void	ft_parse(t_printf *pf, va_list ap)

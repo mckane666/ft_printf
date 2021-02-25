@@ -14,24 +14,24 @@
 
 void	ft_conversions(t_printf *pf, va_list ap)
 {
-	if (ft_strchr("c", pf->get_args[pf->index]))
-		;//ft_is_c(pf, ap);
-	else if (ft_strchr("s", pf->get_args[pf->index]))
+	// if (ft_strchr("c", pf->get_args[pf->index]))
+	// 	ft_is_c(pf, ap);
+	if (ft_strchr("s", pf->get_args[pf->index]))
 		ft_is_str(pf, ap);
-	else if (ft_strchr("p", pf->get_args[pf->index])) //
-		;//ft_is_p(pf, ap);
-	else if (ft_strchr("d", pf->get_args[pf->index])) //
-		;//ft_is_p(pf, ap);
-	else if (ft_strchr("i", pf->get_args[pf->index])) //
-		;//ft_is_p(pf, ap);
-	else if (ft_strchr("u", pf->get_args[pf->index])) //
-		;//ft_is_p(pf, ap);
-	else if (ft_strchr("x", pf->get_args[pf->index])) //
-		;//ft_is_p(pf, ap);
-	else if (ft_strchr("X", pf->get_args[pf->index])) //
-		;//ft_is_p(pf, ap);
-	else if (ft_strchr("%", pf->get_args[pf->index])) //
-		;//ft_is_p(pf, ap);
+	// else if (ft_strchr("p", pf->get_args[pf->index])) //
+	// 	ft_is_p(pf, ap);
+	// else if (ft_strchr("d", pf->get_args[pf->index])) //
+	// 	ft_is_p(pf, ap);
+	// else if (ft_strchr("i", pf->get_args[pf->index])) //
+	// 	ft_is_p(pf, ap);
+	// else if (ft_strchr("u", pf->get_args[pf->index])) //
+	// 	ft_is_p(pf, ap);
+	// else if (ft_strchr("x", pf->get_args[pf->index])) //
+	// 	ft_is_p(pf, ap);
+	// else if (ft_strchr("X", pf->get_args[pf->index])) //
+	// 	ft_is_p(pf, ap);
+	// else if (ft_strchr("%", pf->get_args[pf->index])) //
+	// 	ft_is_p(pf, ap);
 }
 
 void	ft_is_str(t_printf *pf, va_list ap)
@@ -43,15 +43,17 @@ void	ft_is_str(t_printf *pf, va_list ap)
 	j = 0;
 	if (pf->get_args[pf->index] == 's')
 		pf->str = va_arg(ap, char *);
+	if (!pf->str)
+		pf->str = "(null)";
 	pf->str_len = ft_strlen(pf->str);
-	if (!pf->precision || (pf->precision < 0))
+	if ((!pf->precision || pf->precision < 0) && !pf->point) //
 		pf->precision = pf->str_len;
 	pf->retu = ft_calloc(sizeof(char), pf->width + pf->precision + 1);
 	while ((pf->str[j] && j < pf->precision) && pf->minus)
 		pf->retu[i++] = pf->str[j++];
 	while (pf->width-- > pf->precision
-		|| pf->str_len - pf->point < pf->width--)
-		pf->retu[i++] = 'i';
+		|| (pf->str_len - pf->point + pf->zero  <= pf->width--))
+		pf->retu[i++] = ' ';
 	while ((pf->str[j] && j < pf->precision) && !pf->minus)
 		pf->retu[i++] = pf->str[j++];
 	pf->retu[i] = 0;
