@@ -12,9 +12,6 @@
 
 #include "ft_printf.h"
 
-#include "ft_printf.h"
-#include "libft/libft.h"
-
 void	ft_init_printf_flags(t_printf *pf)
 {
 	pf->point = 0;
