@@ -52,6 +52,7 @@ void	ft_flags(t_printf *pf, va_list ap)
 				pf->precision = 0;
 				pf->zero = 1;
 			}
+			pf->point = 1;
 		}
 		else if (ft_strchr("*", pf->get_args[pf->index]))
 			ft_save_ast(pf, ap);
