@@ -42,6 +42,7 @@ typedef struct	s_printf
 	char	*get_args;
 	char	*retu;
 	int		index;
+	int		sign;
 
 	int		cont;
 	int		zero;
@@ -55,6 +56,10 @@ typedef struct	s_printf
 char			*ft_ftoa(double n);
 int				ft_printf(const char *fmt, ...);
 void			ft_is_str(t_printf *pf, va_list ap);
+void			ft_is_c(t_printf *pf, va_list ap);
+void			ft_is_i(t_printf *pf, va_list ap);
+void			ft_is_percent(t_printf *pf);
+void			ft_is_d(t_printf *pf, va_list ap);
 void			ft_init_printf_flags(t_printf *pf);
 void			ft_conversions(t_printf *pf, va_list ap);
 /*
