@@ -25,6 +25,7 @@
 # define WIDTH "0123456789"
 # define SIZE "0123456789"
 # define SPECIFIERS "-0.*0123456789"
+# define ZERO_NO " 0"
 
 /*
 ** 1st part

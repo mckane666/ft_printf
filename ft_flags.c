@@ -98,7 +98,6 @@ void	ft_is_c(t_printf *pf, va_list ap)
 void	ft_is_percent(t_printf *pf)
 {
 	int i;
-
 	i = 0;
 	if (pf->sign)
 		ft_putchar('%');
@@ -106,9 +105,12 @@ void	ft_is_percent(t_printf *pf)
 	{
 		pf->retu = ft_calloc(sizeof(char), pf->width + 1);
 		if (pf->minus)
+		{
 			pf->retu[i++] = '%';
+			pf->zero = 0;
+		}
 		while (--pf->width)
-			pf->retu[i++] = ' ';
+			pf->retu[i++] = ZERO_NO[pf->zero];
 		if (!pf->minus)
 			pf->retu[i++] = '%';
 		pf->retu[i++] = 0;
