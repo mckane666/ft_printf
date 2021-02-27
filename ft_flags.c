@@ -102,7 +102,7 @@ void	ft_is_percent(t_printf *pf)
 	i = 0;
 	if (pf->sign)
 		ft_putchar('%');
-	if (pf->width)
+	else if (pf->width)
 	{
 		pf->retu = ft_calloc(sizeof(char), pf->width + 1);
 		if (pf->minus)

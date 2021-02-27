@@ -98,7 +98,7 @@ int		ft_printf(const char *format, ...)
 
 		if (format[pf.index] == '%')
 		{
-			if (format[++pf.index] == '%')
+			if (format[pf.index++] == '%')
 				pf.sign = 1;
 			ft_parse(&pf, ap);
 		}
