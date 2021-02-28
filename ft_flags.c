@@ -46,9 +46,9 @@ void	ft_is_str(t_printf *pf, va_list ap)
 	if (!pf->str)
 		pf->str = "(null)";
 	pf->str_len = ft_strlen(pf->str);
-	if ((!pf->precision || pf->precision < 0) && !pf->point) //
+	if ((pf->width && pf->precision < 0) || (!pf->point)) //
 		pf->precision = pf->str_len;
-	pf->retu = ft_calloc(sizeof(char), pf->width + pf->precision + 1);
+	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->point + 1 + pf->ast);
 	while ((pf->str[j] && j < pf->precision) && pf->minus)
 		pf->retu[i++] = pf->str[j++];
 	while (pf->width-- > pf->precision
@@ -60,7 +60,7 @@ void	ft_is_str(t_printf *pf, va_list ap)
 	pf->cont += ft_strlen(pf->retu);
 	ft_putstr(pf->retu);
 	ft_init_printf_flags(pf);
-	//free(pf->retu);
+	free(pf->retu);
 }
 
 void	ft_is_c(t_printf *pf, va_list ap)
@@ -71,7 +71,7 @@ void	ft_is_c(t_printf *pf, va_list ap)
 		pf->c = (char)va_arg(ap, int);
 	if (!pf->c)
 		pf->c = '\x0';
-	if (pf->width)
+	else if (pf->width)
 	{
 		pf->retu = ft_calloc(sizeof(char), pf->width + 1);
 		if (pf->minus)

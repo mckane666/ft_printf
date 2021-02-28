@@ -88,14 +88,6 @@ int		ft_printf(const char *format, ...)
 	va_start(ap, format);
 	while (format[pf.index] != '\0')
 	{
-		// if (format[pf.index] == '%')
-		// {
-		// 	pf.index++;
-		// 	if (format[pf.index] == '%')
-		// 		ft_putchar('%');
-		// 	else
-		// 		ft_parse(&pf, ap);
-
 		if (format[pf.index] == '%')
 		{
 			if (format[++pf.index] == '%')//
