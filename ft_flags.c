@@ -52,7 +52,7 @@ void	ft_is_str(t_printf *pf, va_list ap)
 	while ((pf->str[j] && j < pf->precision) && pf->minus)
 		pf->retu[i++] = pf->str[j++];
 	while (pf->width-- > pf->precision - ((pf->precision > pf->str_len))
-		|| (pf->str_len - pf->point + pf->zero < pf->width--))
+		|| (pf->str_len - pf->point < pf->width--))
 		pf->retu[i++] = ' ';
 	while ((pf->str[j] && j < pf->precision) && !pf->minus)
 		pf->retu[i++] = pf->str[j++];
