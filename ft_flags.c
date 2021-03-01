@@ -14,9 +14,9 @@
 
 void	ft_conversions(t_printf *pf, va_list ap)
 {
-	// if (ft_strchr("c", pf->get_args[pf->index]))
-	// 	ft_is_c(pf, ap);
-	if (ft_strchr("s", pf->get_args[pf->index]))
+	if (ft_strchr("c", pf->get_args[pf->index]))
+		ft_is_c(pf, ap);
+	else if (ft_strchr("s", pf->get_args[pf->index]))
 		ft_is_str(pf, ap);
 	// else if (ft_strchr("p", pf->get_args[pf->index])) //
 	// 	ft_is_p(pf, ap);
@@ -30,8 +30,8 @@ void	ft_conversions(t_printf *pf, va_list ap)
 	// 	ft_is_p(pf, ap);
 	// else if (ft_strchr("X", pf->get_args[pf->index])) //
 	// 	ft_is_p(pf, ap);
-	// else if (ft_strchr("%", pf->get_args[pf->index])) //
-	// 	ft_is_p(pf, ap);
+	else if (ft_strchr("%", pf->get_args[pf->index])) //
+	 	ft_is_percent(pf);
 }
 
 void	ft_is_str(t_printf *pf, va_list ap)
@@ -46,9 +46,9 @@ void	ft_is_str(t_printf *pf, va_list ap)
 	if (!pf->str)
 		pf->str = "(null)";
 	pf->str_len = ft_strlen(pf->str);
-	if ((!pf->precision || pf->precision < 0) && !pf->point) //
+	if ((pf->width && pf->precision < 0) || (!pf->point)) //
 		pf->precision = pf->str_len;
-	pf->retu = ft_calloc(sizeof(char), pf->width + pf->precision + 1);
+	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->point + 1 + pf->ast);
 	while ((pf->str[j] && j < pf->precision) && pf->minus)
 		pf->retu[i++] = pf->str[j++];
 	while (pf->width-- > pf->precision
@@ -59,8 +59,66 @@ void	ft_is_str(t_printf *pf, va_list ap)
 	pf->retu[i] = 0;
 	pf->cont += ft_strlen(pf->retu);
 	ft_putstr(pf->retu);
-	free(pf->retu);
 	ft_init_printf_flags(pf);
+	free(pf->retu);
+}
+
+void	ft_is_c(t_printf *pf, va_list ap)
+{
+	int i;
+	i = 0;
+	if (pf->get_args[pf->index] == 'c')
+		pf->c = (char)va_arg(ap, int);
+	if (!pf->c)
+		pf->c = '\x0';
+	else if (pf->width)
+	{
+		pf->retu = ft_calloc(sizeof(char), pf->width + 1);
+		if (pf->minus)
+			pf->retu[i++] = pf->c;
+		while (--pf->width)
+			pf->retu[i++] = ' ';
+		if (!pf->minus)
+			pf->retu[i++] = pf->c;
+		pf->retu[i++] = 0;
+		ft_putstr(pf->retu);
+		pf->cont += pf->width + 1;
+		ft_init_printf_flags(pf);
+		free(pf->retu);
+	}
+	else
+	{
+		ft_putchar(pf->c);
+		pf->cont += pf->width + 1;
+		ft_init_printf_flags(pf);
+	}
+	
+}
+
+void	ft_is_percent(t_printf *pf)
+{
+	int i;
+	i = 0;
+	if (pf->sign)
+		ft_putchar('%');
+	else if (pf->width)
+	{
+		pf->retu = ft_calloc(sizeof(char), pf->width + 1);
+		if (pf->minus)
+		{
+			pf->retu[i++] = '%';
+			pf->zero = 0;
+		}
+		while (--pf->width)
+			pf->retu[i++] = ZERO_NO[pf->zero];
+		if (!pf->minus)
+			pf->retu[i++] = '%';
+		pf->retu[i++] = 0;
+		ft_putstr(pf->retu);
+		pf->cont += pf->width + 1;
+		ft_init_printf_flags(pf);
+		free(pf->retu);
+	}
 }
 
 /*
@@ -85,10 +143,5 @@ else if (format[pf.index] == 'f')
 	cont++;
 	ft_putstr(ft_ftoa(pf.d));
 }
-else if (format[pf.index] == 'c')
-{
-	pf.c = va_arg(ap, int);
-	cont++;
-	ft_putchar((char)pf.c);
 }*/
 

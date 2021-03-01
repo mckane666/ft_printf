@@ -65,13 +65,13 @@ void	ft_flags(t_printf *pf, va_list ap)
 			pf->precision = ft_atoi(&pf->get_args[pf->index]);
 		pf->index++;
 	}
-	//printf("\nPreci = %d widht = %d index = %d minus = %d point = %d zero = %d ast = %d\n", pf->precision, pf->width, pf->index, pf->minus, pf->point, pf->zero, pf->ast);
 }
 
 void	ft_parse(t_printf *pf, va_list ap)
 {
 	if (ft_strchr(SPECIFIERS, pf->get_args[pf->index]))
 		ft_flags(pf, ap);
+	//printf("\nPreci = %d sign = %d widht = %d index = %d minus = %d point = %d zero = %d ast = %d\n", pf->precision,pf->sign, pf->width, pf->index, pf->minus, pf->point, pf->zero, pf->ast);
 	if (ft_strchr(CONVERSIONS, pf->get_args[pf->index]))
 		ft_conversions(pf, ap);
 }
@@ -90,11 +90,9 @@ int		ft_printf(const char *format, ...)
 	{
 		if (format[pf.index] == '%')
 		{
-			pf.index++;
-			if (format[pf.index] == '%')
-				ft_putchar('%');
-			else
-				ft_parse(&pf, ap);
+			if (format[++pf.index] == '%')//
+				pf.sign = 1;
+			ft_parse(&pf, ap);
 		}
 		else
 		{

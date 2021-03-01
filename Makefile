@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = libftprintf.a
-HEADER	= printf.h
+HEADER	= ft_printf.h
 CFLAGS = -Wall -Wextra -Werror
 OBJS = $(SRCS:%.c=%.o)
 OBJS_BONUS = $(SRCS_BONUS:%.c=%.o)
