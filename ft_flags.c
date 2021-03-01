@@ -6,7 +6,7 @@
 /*   By: jhenriqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/22 10:30:44 by jhenriqu          #+#    #+#             */
-/*   Updated: 2021/03/01 11:22:10 by jhenriqu         ###   ########.fr       */
+/*   Updated: 2021/03/01 11:41:41 by jhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ void	ft_is_str(t_printf *pf, va_list ap)
 	if (!pf->str)
 		pf->str = "(null)";
 	pf->str_len = ft_strlen(pf->str);
-	if (((pf->width || !pf->width && pf->precision < 0) || (!pf->point)) //
+	if (((pf->width || !pf->width) && pf->precision < 0) || (!pf->point)) //
 		pf->precision = pf->str_len;
 	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->point + 1 + pf->ast);
 	while ((pf->str[j] && j < pf->precision) && pf->minus)
 		pf->retu[i++] = pf->str[j++];
 	while (pf->width-- > pf->precision - ((pf->precision > pf->str_len))
-		|| (pf->str_len - pf->point + pf->zero  < pf->width--))
+		|| (pf->str_len - pf->point + pf->zero < pf->width--))
 		pf->retu[i++] = ' ';
 	while ((pf->str[j] && j < pf->precision) && !pf->minus)
 		pf->retu[i++] = pf->str[j++];
@@ -66,14 +66,16 @@ void	ft_is_str(t_printf *pf, va_list ap)
 void	ft_is_c(t_printf *pf, va_list ap)
 {
 	int i;
+	
 	i = 0;
 	if (pf->get_args[pf->index] == 'c')
 		pf->c = (char)va_arg(ap, int);
 	if (!pf->c)
-		pf->c = '\x0';
+		pf->c = '\x00';
 	else if (pf->width)
 	{
 		pf->retu = ft_calloc(sizeof(char), pf->width + 1);
+		pf->cont += pf->width;
 		if (pf->minus)
 			pf->retu[i++] = pf->c;
 		while (--pf->width)
@@ -82,7 +84,6 @@ void	ft_is_c(t_printf *pf, va_list ap)
 			pf->retu[i++] = pf->c;
 		pf->retu[i++] = 0;
 		ft_putstr(pf->retu);
-		pf->cont += pf->width + 1;
 		ft_init_printf_flags(pf);
 		free(pf->retu);
 	}
@@ -92,12 +93,12 @@ void	ft_is_c(t_printf *pf, va_list ap)
 		pf->cont += pf->width + 1;
 		ft_init_printf_flags(pf);
 	}
-	
 }
 
 void	ft_is_percent(t_printf *pf)
 {
 	int i;
+
 	i = 0;
 	if (pf->sign)
 		ft_putchar('%');
@@ -115,10 +116,10 @@ void	ft_is_percent(t_printf *pf)
 			pf->retu[i++] = '%';
 		pf->retu[i++] = 0;
 		ft_putstr(pf->retu);
-		pf->cont += pf->width + 1;
 		ft_init_printf_flags(pf);
 		free(pf->retu);
 	}
+	pf->cont += pf->width + 1;
 }
 
 /*

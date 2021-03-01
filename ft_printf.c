@@ -21,6 +21,7 @@ void	ft_init_printf_flags(t_printf *pf)
 	pf->str_len = 0;
 	pf->width = 0;
 	pf->precision = 0;
+	pf->sign = 0;
 }
 
 void	ft_save_ast(t_printf *pf, va_list ap)
