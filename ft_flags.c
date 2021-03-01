@@ -69,19 +69,17 @@ void	ft_is_c(t_printf *pf, va_list ap)
 	
 	i = 0;
 	if (pf->get_args[pf->index] == 'c')
-		pf->c = (char)va_arg(ap, int);
-	if (!pf->c)
-		pf->c = '\x00';
-	else if (pf->width)
+		pf->c = va_arg(ap, int);
+	if (pf->width)
 	{
 		pf->retu = ft_calloc(sizeof(char), pf->width + 1);
 		pf->cont += pf->width;
 		if (pf->minus)
-			pf->retu[i++] = pf->c;
+			write(1, &pf->c,1);
 		while (--pf->width)
-			pf->retu[i++] = ' ';
+			write(1, " ",1);
 		if (!pf->minus)
-			pf->retu[i++] = pf->c;
+			write(1, &pf->c,1);
 		pf->retu[i++] = 0;
 		ft_putstr(pf->retu);
 		ft_init_printf_flags(pf);
