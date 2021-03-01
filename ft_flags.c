@@ -6,7 +6,7 @@
 /*   By: jhenriqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/22 10:30:44 by jhenriqu          #+#    #+#             */
-/*   Updated: 2021/02/25 00:11:09 by jhenriqu         ###   ########.fr       */
+/*   Updated: 2021/03/01 11:22:10 by jhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ void	ft_is_str(t_printf *pf, va_list ap)
 	if (!pf->str)
 		pf->str = "(null)";
 	pf->str_len = ft_strlen(pf->str);
-	if ((pf->width && pf->precision < 0) || (!pf->point)) //
+	if (((pf->width || !pf->width && pf->precision < 0) || (!pf->point)) //
 		pf->precision = pf->str_len;
 	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->point + 1 + pf->ast);
 	while ((pf->str[j] && j < pf->precision) && pf->minus)
 		pf->retu[i++] = pf->str[j++];
-	while (pf->width-- > pf->precision
-		|| (pf->str_len - pf->point + pf->zero  <= pf->width--))
+	while (pf->width-- > pf->precision - ((pf->precision > pf->str_len))
+		|| (pf->str_len - pf->point + pf->zero  < pf->width--))
 		pf->retu[i++] = ' ';
 	while ((pf->str[j] && j < pf->precision) && !pf->minus)
 		pf->retu[i++] = pf->str[j++];
