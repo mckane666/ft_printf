@@ -144,11 +144,21 @@ void	ft_is_p(t_printf *pf, va_list ap)
 {
 	int i;
 	
-	i = 0;
+	i = 2;
 	if (pf->get_args[pf->index] == 'p')
 		pf->p = va_arg(ap, unsigned long);
-	pf->str = ft_calloc(1, 10);
-	pf->str = ft_hexa(pf->p);
+	pf->str_len = ft_strlen(ft_hexa(pf->p));
+	pf->str = ft_strdup("0x");
+	if (pf->p < 0)
+	{
+		pf->str = ft_calloc(sizeof(char), 11);
+		while(i < 9 - pf->str_len)
+			pf->str[i++] = 'f';
+		pf->str[i] = 0;
+		pf->str = ft_strjoin(pf->str, ft_hexa(pf->p));
+	}
+	else
+		pf->str = ft_strjoin(pf->str, ft_hexa(pf->p));
 	ft_putstr(pf->str);
 }
 
