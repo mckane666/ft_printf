@@ -39,7 +39,7 @@ typedef struct	s_printf
 	int					u;
 	int					x;
 	char				c;
-	unsigned long		p;
+	int					p;
 	char				*str;
 	int					str_len;
 	char				*get_args;
