@@ -38,11 +38,9 @@ void	ft_is_str(t_printf *pf, va_list ap)
 {
 	int i;
 	int j;
-	int k;
 
 	i = 0;
 	j = 0;
-	k = 0;
 	if (pf->get_args[pf->index] == 's')
 		pf->str = va_arg(ap, char *);
 	if (!pf->str)
