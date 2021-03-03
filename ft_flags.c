@@ -155,10 +155,15 @@ void	ft_is_p(t_printf *pf, va_list ap)
 			pf->retu[i++] = 'f';
 		pf->retu[i] = 0;
 		pf->retu = ft_strjoin(pf->retu, ft_hexa(pf->p));
+		pf->retu = ft_strjoin("0x", pf->retu);
 	}
+	else if (!pf->p)
+		pf->retu = ft_strdup("(nil)");
 	else
+	{
 		pf->retu = ft_hexa(pf->p);
-	pf->retu = ft_strjoin("0x", pf->retu);
+		pf->retu = ft_strjoin("0x", pf->retu);
+	}
 	ft_putstr(pf->retu);
 	ft_init_printf_flags(pf);
 	free(pf->retu);
