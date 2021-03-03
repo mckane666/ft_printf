@@ -18,8 +18,8 @@ void	ft_conversions(t_printf *pf, va_list ap)
 		ft_is_c(pf, ap);
 	else if (ft_strchr("s", pf->get_args[pf->index]))
 		ft_is_str(pf, ap);
-	// else if (ft_strchr("p", pf->get_args[pf->index])) //
-	// 	ft_is_p(pf, ap);
+	else if (ft_strchr("p", pf->get_args[pf->index])) //
+		ft_is_p(pf, ap);
 	// else if (ft_strchr("d", pf->get_args[pf->index])) //
 	// 	ft_is_p(pf, ap);
 	// else if (ft_strchr("i", pf->get_args[pf->index])) //
@@ -120,6 +120,37 @@ void	ft_is_percent(t_printf *pf)
 	pf->cont += pf->width + 1;
 }
 
+char	*ft_hexa(int n)
+{
+	char *hex;
+	int i;
+    int nn;
+
+	i = 1;
+    nn = n;
+	while (nn/=16)
+		i++;
+	hex = ft_calloc(sizeof(char), i + 1);
+	hex[i + 1] = 0;
+	while (n)
+    {
+        hex[--i] = HEXA[n % 16];
+        n /=16;
+    }
+	return (hex);
+}
+
+void	ft_is_p(t_printf *pf, va_list ap)
+{
+	int i;
+	
+	i = 0;
+	if (pf->get_args[pf->index] == 'p')
+		pf->p = va_arg(ap, int);
+	pf->str = ft_strjoin("0x", ft_hexa(pf->p));
+	ft_putstr(pf->str);
+}
+
 /*
 ft_minus(pf, ap, format[pf.index]);// "%-5.45s\n", "ola"
 if (ft_strchr(CONVERSION, *format))
@@ -143,4 +174,3 @@ else if (format[pf.index] == 'f')
 	ft_putstr(ft_ftoa(pf.d));
 }
 }*/
-
