@@ -120,7 +120,7 @@ void	ft_is_percent(t_printf *pf)
 	pf->cont += pf->width + 1;
 }
 
-char	*ft_hexa(int n)
+char	*ft_hexa(unsigned long n)
 {
 	char *hex;
 	int i;
@@ -146,8 +146,9 @@ void	ft_is_p(t_printf *pf, va_list ap)
 	
 	i = 0;
 	if (pf->get_args[pf->index] == 'p')
-		pf->p = va_arg(ap, int);
-	pf->str = ft_strjoin("0x", ft_hexa(pf->p));
+		pf->p = va_arg(ap, unsigned long);
+	pf->str = ft_calloc(1, 10);
+	pf->str = ft_hexa(pf->p);
 	ft_putstr(pf->str);
 }
 

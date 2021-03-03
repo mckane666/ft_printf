@@ -26,6 +26,7 @@
 # define SIZE "0123456789"
 # define SPECIFIERS "-0.*0123456789"
 # define ZERO_NO " 0"
+# define HEXA "0123456789abcdef"
 
 /*
 ** 1st part
@@ -33,34 +34,38 @@
 
 typedef struct	s_printf
 {
-	int		i;
-	double	d;
-	int		u;
-	int		x;
-	char	c;
-	char	*str;
-	int		str_len;
-	char	*get_args;
-	char	*retu;
-	int		index;
-	int		sign;
+	int					i;
+	double				d;
+	int					u;
+	int					x;
+	char				c;
+	unsigned long		p;
+	char				*str;
+	int					str_len;
+	char				*get_args;
+	char				*retu;
+	int					index;
+	int					sign;
 
-	int		cont;
-	int		zero;
-	int		ast;
-	int		point;
-	int		width;
-	int		minus;
-	int		precision;
+	int					cont;
+	int					zero;
+	int					ast;
+	int					point;
+	int					width;
+	int					minus;
+	int					precision;
 }				t_printf;
 
 char			*ft_ftoa(double n);
+char			*ft_hexa(unsigned long n);
 int				ft_printf(const char *fmt, ...);
 void			ft_is_str(t_printf *pf, va_list ap);
 void			ft_is_c(t_printf *pf, va_list ap);
 void			ft_is_i(t_printf *pf, va_list ap);
+void			ft_is_p(t_printf *pf, va_list ap);
 void			ft_is_percent(t_printf *pf);
 void			ft_is_d(t_printf *pf, va_list ap);
+void			ft_is_c(t_printf *pf, va_list ap);
 void			ft_init_printf_flags(t_printf *pf);
 void			ft_conversions(t_printf *pf, va_list ap);
 /*
