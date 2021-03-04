@@ -120,7 +120,7 @@ void	ft_is_percent(t_printf *pf)
 	pf->cont += pf->width + 1;
 }
 
-char	*ft_hexa(unsigned long n)
+char	*ft_hexa(unsigned long long n)
 {
 	char *hex;
 	int i;
@@ -146,7 +146,7 @@ void	ft_is_p(t_printf *pf, va_list ap)
 	
 	i = 0;
 	if (pf->get_args[pf->index] == 'p')
-		pf->p = va_arg(ap, unsigned long);
+		pf->p = va_arg(ap, long long int);
 	pf->retu = ft_hexa(pf->p);
 	if (!pf->p)
 		pf->retu = ft_strdup("0");
