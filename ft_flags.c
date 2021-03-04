@@ -148,6 +148,13 @@ void	ft_is_p(t_printf *pf, va_list ap)
 	if (pf->get_args[pf->index] == 'p')
 		pf->p = va_arg(ap, unsigned long);
 	pf->str_len = ft_strlen(ft_hexa(pf->p));
+	if (!pf->p)
+	{
+		pf->retu = ft_strdup("0x0");
+		pf->str_len = 2;
+	}
+	while (--pf->width > pf->str_len)
+		write(1, "i",1);
 	if (pf->p < 0)
 	{
 		pf->retu = ft_calloc(sizeof(char), 9);
@@ -155,15 +162,11 @@ void	ft_is_p(t_printf *pf, va_list ap)
 			pf->retu[i++] = 'f';
 		pf->retu[i] = 0;
 		pf->retu = ft_strjoin(pf->retu, ft_hexa(pf->p));
-		pf->retu = ft_strjoin("x", pf->retu);
+		pf->retu = ft_strjoin("0x", pf->retu);
 	}
-	else if (!pf->p)
-		pf->retu = ft_strdup("0x0");
-	else
+	else if (pf->p)
 	{
-		//pf->retu = ft_calloc(sizeof(char), pf->width + 1);
-		while (--pf->width > pf->str_len)
-			write(1, " ",1);
+	//pf->retu = ft_calloc(sizeof(char), pf->width + 1);
 		pf->retu = ft_hexa(pf->p);
 		pf->retu = ft_strjoin("0x", pf->retu);
 	}
