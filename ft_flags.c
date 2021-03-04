@@ -147,28 +147,29 @@ void	ft_is_p(t_printf *pf, va_list ap)
 	i = 0;
 	if (pf->get_args[pf->index] == 'p')
 		pf->p = va_arg(ap, unsigned long);
-	pf->str = ft_hexa(pf->p);
+	pf->retu = ft_hexa(pf->p);
 	if (!pf->p)
-		pf->str = ft_strdup("0");
-	pf->str_len = ft_strlen(pf->str) + 1;
+		pf->retu = ft_strdup("0");
+	pf->str_len = ft_strlen(pf->retu) + 1;
 	if (pf->p < 0)
 	{
 		pf->retu = ft_calloc(sizeof(char), 9);
 		while(i < 8 - pf->str_len + 1)
 			pf->retu[i++] = 'f';
 		pf->retu[i] = 0;
-		pf->retu = ft_strjoin("0x", ft_strjoin(pf->retu, pf->str));
+		pf->retu = ft_strjoin("0x", ft_strjoin(pf->retu, ft_hexa(pf->p)));
 		pf->cont += 10;
 	}
 	else
 	{
 		if (pf->p)
-		pf->retu = ft_strjoin("0x", pf->str);
+			pf->retu = ft_hexa(pf->p);
+		pf->retu = ft_strjoin("0x", pf->retu);
 		pf->cont += 1 + pf->str_len;
 	}
 	i = 0; 
 	while ((pf->width - ++i > pf->str_len + (pf->p < 0) * 7) && !pf->minus)
-		write(1, "i",1);
+		write(1, " ",1);
 	ft_putstr(pf->retu);
 	while ((pf->width - ++i >= pf->str_len + (pf->p < 0) * 7) && pf->minus)
 	 	write(1, " ",1);
