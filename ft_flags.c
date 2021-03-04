@@ -130,8 +130,8 @@ char	*ft_hexa(unsigned long n)
     nn = n;
 	while (nn/=16)
 		i++;
-	hex = ft_calloc(sizeof(char), i);
-	hex[i] = 0;
+	hex = ft_calloc(sizeof(char), i + 1);
+	hex[i] = '\0';
 	while (n)
     {
         hex[--i] = HEXA[n % 16];
@@ -146,24 +146,22 @@ void	ft_is_p(t_printf *pf, va_list ap)
 	
 	i = 0;
 	if (pf->get_args[pf->index] == 'p')
-		pf->p = va_arg(ap, int);
+		pf->p = va_arg(ap, unsigned long);
 	pf->str_len = ft_strlen(ft_hexa(pf->p));
 	if (pf->p < 0)
 	{
-		pf->retu = ft_calloc(sizeof(char), 8);
-		// while (--pf->width > pf->str_len)
-		// 	write(1, " ",1);
-		while(i < 7 - pf->str_len)
+		pf->retu = ft_calloc(sizeof(char), 9);
+		while(i < 7 - (unsigned int)pf->str_len)
 			pf->retu[i++] = 'f';
 		pf->retu[i] = 0;
 		pf->retu = ft_strjoin(pf->retu, ft_hexa(pf->p));
-		pf->retu = ft_strjoin("0x", pf->retu);
+		pf->retu = ft_strjoin("x", pf->retu);
 	}
 	else if (!pf->p)
 		pf->retu = ft_strdup("0x0");
 	else
 	{
-		pf->retu = ft_calloc(sizeof(char), pf->width + 1);
+		//pf->retu = ft_calloc(sizeof(char), pf->width + 1);
 		while (--pf->width > pf->str_len)
 			write(1, " ",1);
 		pf->retu = ft_hexa(pf->p);
