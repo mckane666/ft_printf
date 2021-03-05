@@ -1,6 +1,6 @@
 #include "ft_printf.h"
 
-int	main(int argc, char **argv)
+int	main(void)
 {
 	int a;
 	int b;
@@ -15,34 +15,24 @@ int	main(int argc, char **argv)
 	int h;
 	char *flag = "-0.*";
 	printf("\n");
-	if (ft_strchr(argv[1], 1) == 0)
-	{
-		a = ft_printf("%p %15p %-15p", -2, -2, -2);
-		b = printf("%p %15p %-15p", -2, -2, -2);
-		printf("\n");
-		printf("\nft_printf = %d\nprintf = %d\n", a, b);
-	}
-	else if (ft_strchr(argv[1], 2) == 0)
-	{
-		c = ft_printf("%p %15p %-15p", 0, 0, 0);
-		d = printf("%p %15p %-15p", 0, 0, 0);
-		printf("\n");
-		printf("\nft_printf = %d\nprintf = %d\n", c, d);
-	}
-	else if (ft_strchr(argv[1], 3) == 0)
-	{
-		e = ft_printf("%p %15p %-15p", 2, 2, 2);
-		f = printf("%p %15p %-15p", 2, 2, 2);
-		printf("\n");
-		printf("\nft_printf = %d\nprintf = %d", e, f);
-	}
-	else if (ft_strchr(argv[1], 4) == 0)
-	{
-		g = ft_printf("%*p %*p",20, &flag,-20, &flag);
-		h = printf("%*p %*p",20, &flag,-20, &flag);
-		printf("\n");
-		printf("\nft_printf = %d\nprintf = %d", g, h);
-	}
-	printf("fim");
+	// a = ft_printf("%p %15p %-15p", -2, -2, -2);
+	// b = printf("%p %15p %-15p", -2, -2, -2);
+	// printf("\n\n");
+	// printf("\nft_printf = %d\nprintf = %d\n", a, b);
+
+	// c = ft_printf("%p %15p %-15p", 0, 0, 0);
+	// d = printf("%p %15p %-15p", 0, 0, 0);
+	// printf("\n\n");
+	// printf("\nft_printf = %d\nprintf = %d\n", c, d);
+
+	// e = ft_printf("%p %15p %-15p", 2, 2, 2);
+	// f = printf("%p %15p %-15p", 2, 2, 2);
+	// printf("\n\n");
+	// printf("\nft_printf = %d\nprintf = %d", e, f);
+
+	g = ft_printf("%*p %*p",15,-15, &flag, &flag);
+	h = ft_printf("%*p %*p",15,-15, &flag, &flag);
+	printf("\n\n");
+	printf("\nft_printf = %d\nprintf = %d", g, h);
 }
 	
