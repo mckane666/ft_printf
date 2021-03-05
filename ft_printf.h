@@ -39,7 +39,7 @@ typedef struct	s_printf
 	int					u;
 	int					x;
 	char				c;
-	int					p;
+	long				p;
 	char				*str;
 	int					str_len;
 	char				*get_args;
@@ -57,7 +57,7 @@ typedef struct	s_printf
 }				t_printf;
 
 char			*ft_ftoa(double n);
-char			*ft_hexa(unsigned int n);
+char			*ft_hexa(unsigned long n);
 int				ft_printf(const char *fmt, ...);
 void			ft_is_str(t_printf *pf, va_list ap);
 void			ft_is_c(t_printf *pf, va_list ap);
