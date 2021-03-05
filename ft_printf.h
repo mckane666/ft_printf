@@ -57,7 +57,7 @@ typedef struct	s_printf
 }				t_printf;
 
 char			*ft_ftoa(double n);
-char			*ft_hexa(unsigned long n, t_printf *pf);
+void			ft_hexa(unsigned long n, t_printf *pf);
 int				ft_printf(const char *fmt, ...);
 void			ft_is_str(t_printf *pf, va_list ap);
 void			ft_is_c(t_printf *pf, va_list ap);

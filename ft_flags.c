@@ -61,6 +61,7 @@ void	ft_is_str(t_printf *pf, va_list ap)
 	ft_putstr(pf->retu);
 	ft_init_printf_flags(pf);
 	free(pf->retu);
+	free(pf->str);
 }
 
 void	ft_is_c(t_printf *pf, va_list ap)
@@ -120,22 +121,27 @@ void	ft_is_percent(t_printf *pf)
 	pf->cont += pf->width + 1;
 }
 
-char	*ft_hexa(unsigned long n, t_printf *pf)
+void	ft_hexa(unsigned long n, t_printf *pf)
 {
 	int i;
     unsigned long nn;
 
 	i = 1;
     nn = n;
-	while (nn/=16)
-		++i;
-	pf->str = ft_calloc(sizeof(char), i + 1);
-	pf->str[i] = 0;
-	while (n)
-    {
-        pf->str[--i] = HEXA[n % 16];
-        n/=16;
-    }
+	if (!n)
+		pf->str = strdup("0");
+	else
+	{
+		while (nn/=16)
+			++i;
+		pf->str = ft_calloc(sizeof(char), i + 1);
+		pf->str[i] = 0;
+		while (n)
+		{
+			pf->str[--i] = HEXA[n % 16];
+			n/=16;
+		}
+	}
 }
 
 void	ft_is_p(t_printf *pf, va_list ap)
@@ -147,11 +153,6 @@ void	ft_is_p(t_printf *pf, va_list ap)
 		pf->p = va_arg(ap, unsigned long);
 	ft_hexa(pf->p, pf);
 	pf->str_len = ft_strlen(pf->str) + 1;
-	if (!pf->p)
-	{
-		pf->str = ft_strdup("0");
-		pf->cont++;
-	}
 	pf->retu = ft_strjoin("0x", pf->str);
 	pf->cont += pf->width + pf->str_len + 1;
 	while (--pf->width > i + pf->str_len && !pf->minus)
@@ -160,9 +161,9 @@ void	ft_is_p(t_printf *pf, va_list ap)
 	while (--pf->width >= i + pf->str_len && pf->minus)
 	 	write(1, " ",1);
 	pf->cont -= pf->width - i + 2;
+	free(pf->str);
 	ft_init_printf_flags(pf);
 	free(pf->retu);
-	free(pf->str);
 }
 
 /*
