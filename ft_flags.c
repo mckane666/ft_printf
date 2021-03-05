@@ -61,7 +61,6 @@ void	ft_is_str(t_printf *pf, va_list ap)
 	ft_putstr(pf->retu);
 	ft_init_printf_flags(pf);
 	free(pf->retu);
-	free(pf->str);
 }
 
 void	ft_is_c(t_printf *pf, va_list ap)
