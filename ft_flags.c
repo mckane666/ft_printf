@@ -26,8 +26,8 @@ void	ft_conversions(t_printf *pf, va_list ap)
 	// 	ft_is_i(pf, ap);
 	// else if (ft_strchr("u", pf->get_args[pf->index])) //
 	// 	ft_is_u(pf, ap);
-	// else if (ft_strchr("x", pf->get_args[pf->index])) //
-	// 	ft_is_x(pf, ap);
+	else if (ft_strchr("x", pf->get_args[pf->index])) //
+	 	ft_is_x(pf, ap);
 	// else if (ft_strchr("X", pf->get_args[pf->index])) //
 	// 	ft_is_X(pf, ap);
 	else if (ft_strchr("%", pf->get_args[pf->index])) //
@@ -36,11 +36,6 @@ void	ft_conversions(t_printf *pf, va_list ap)
 
 void	ft_is_str(t_printf *pf, va_list ap)
 {
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
 	if (pf->get_args[pf->index] == 's')
 		pf->str = va_arg(ap, char *);
 	if (!pf->str)
@@ -49,14 +44,14 @@ void	ft_is_str(t_printf *pf, va_list ap)
 	if (((pf->width || !pf->width) && pf->precision < 0) || (!pf->point)) //
 		pf->precision = pf->str_len;
 	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->point + 1 + pf->ast);
-	while ((pf->str[j] && j < pf->precision) && pf->minus)
-		pf->retu[i++] = pf->str[j++];
+	while ((pf->str[pf->j] && pf->j < pf->precision) && pf->minus)
+		pf->retu[pf->k++] = pf->str[pf->j++];
 	while (pf->width-- > pf->precision - ((pf->precision > pf->str_len))
 		|| (pf->str_len - pf->point++ < (pf->width--)))
-		pf->retu[i++] = ' ';
-	while ((pf->str[j] && j < pf->precision) && !pf->minus)
-		pf->retu[i++] = pf->str[j++];
-	pf->retu[i] = 0;
+		pf->retu[pf->k++] = ' ';
+	while ((pf->str[pf->j] && pf->j < pf->precision) && !pf->minus)
+		pf->retu[pf->k++] = pf->str[pf->j++];
+	pf->retu[pf->k] = 0;
 	pf->cont += ft_strlen(pf->retu);
 	ft_putstr(pf->retu);
 	ft_init_printf_flags(pf);
@@ -65,9 +60,6 @@ void	ft_is_str(t_printf *pf, va_list ap)
 
 void	ft_is_c(t_printf *pf, va_list ap)
 {
-	int i;
-	
-	i = 0;
 	if (pf->get_args[pf->index] == 'c')
 		pf->c = va_arg(ap, int);
 	if (pf->width)
@@ -80,7 +72,7 @@ void	ft_is_c(t_printf *pf, va_list ap)
 			write(1, " ",1);
 		if (!pf->minus)
 			write(1, &pf->c,1);
-		pf->retu[i++] = 0;
+		pf->retu[pf->k++] = 0;
 		ft_putstr(pf->retu);
 		ft_init_printf_flags(pf);
 		free(pf->retu);
@@ -95,9 +87,6 @@ void	ft_is_c(t_printf *pf, va_list ap)
 
 void	ft_is_percent(t_printf *pf)
 {
-	int i;
-
-	i = 0;
 	if (pf->sign)
 		ft_putchar('%');
 	else if (pf->width)
@@ -105,14 +94,14 @@ void	ft_is_percent(t_printf *pf)
 		pf->retu = ft_calloc(sizeof(char), pf->width + 1);
 		if (pf->minus)
 		{
-			pf->retu[i++] = '%';
+			pf->retu[pf->k++] = '%';
 			pf->zero = 0;
 		}
 		while (--pf->width)
-			pf->retu[i++] = ZERO_NO[pf->zero];
+			pf->retu[pf->k++] = ZERO_NO[pf->zero];
 		if (!pf->minus)
-			pf->retu[i++] = '%';
-		pf->retu[i++] = 0;
+			pf->retu[pf->k++] = '%';
+		pf->retu[pf->k++] = 0;
 		ft_putstr(pf->retu);
 		ft_init_printf_flags(pf);
 		free(pf->retu);
@@ -128,7 +117,7 @@ void	ft_hexa(unsigned long n, t_printf *pf)
 	i = 1;
     nn = n;
 	if (!n)
-		pf->str = strdup("0");
+		pf->str = "0";
 	else
 	{
 		while (nn/=16)
@@ -137,7 +126,10 @@ void	ft_hexa(unsigned long n, t_printf *pf)
 		pf->str[i] = 0;
 		while (n)
 		{
-			pf->str[--i] = HEXA[n % 16];
+			if (!pf->lower)
+				pf->str[--i] = HEXAB[n % 16];
+			else
+				pf->str[--i] = HEXA[n % 16];
 			n/=16;
 		}
 	}
@@ -145,22 +137,43 @@ void	ft_hexa(unsigned long n, t_printf *pf)
 
 void	ft_is_p(t_printf *pf, va_list ap)
 {
-	int i;
-	
-	i = 0;
 	if (pf->get_args[pf->index] == 'p')
 		pf->p = va_arg(ap, unsigned long);
 	ft_hexa(pf->p, pf);
 	pf->str_len = ft_strlen(pf->str) + 1;
 	pf->retu = ft_strjoin("0x", pf->str);
 	pf->cont += pf->width + pf->str_len + 1;
-	while (--pf->width > i + pf->str_len && !pf->minus)
+	while (--pf->width > pf->k + pf->str_len && !pf->minus)
 		write(1, " ",1);
 	ft_putstr(pf->retu);
-	while (--pf->width >= i + pf->str_len && pf->minus)
+	while (--pf->width >= pf->k + pf->str_len && pf->minus)
 	 	write(1, " ",1);
-	pf->cont -= pf->width - i + 2;
+	pf->cont -= pf->width - pf->k + 2;
 	free(pf->str);
+	ft_init_printf_flags(pf);
+	free(pf->retu);
+}
+
+void	ft_is_x(t_printf *pf, va_list ap)
+{
+	pf->lower = 1;
+	if (pf->get_args[pf->index] == 'x')
+		pf->x = va_arg(ap, unsigned long);
+	ft_hexa(pf->x, pf);
+	pf->str_len += ft_strlen(pf->str);
+	if (((pf->width || !pf->width) && pf->precision < 0) || (!pf->point))
+		pf->precision = pf->str_len;
+	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->point + 1 + pf->ast);
+	while ((pf->str[pf->j] && pf->j < pf->precision) && pf->minus)
+		pf->retu[pf->k++] = pf->str[pf->j++];
+	while (pf->width-- > pf->precision - ((pf->precision > pf->str_len))
+		|| (pf->str_len - pf->point++ < (pf->width--)))
+		pf->retu[pf->k++] = ' ';
+	while ((pf->str[pf->j] && pf->j < pf->precision) && !pf->minus)
+		pf->retu[pf->k++] = pf->str[pf->j++];
+	pf->retu[pf->k] = 0;
+	pf->cont += ft_strlen(pf->retu);
+	ft_putstr(pf->retu);
 	ft_init_printf_flags(pf);
 	free(pf->retu);
 }

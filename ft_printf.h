@@ -27,6 +27,7 @@
 # define SPECIFIERS "-0.*0123456789"
 # define ZERO_NO " 0"
 # define HEXA "0123456789abcdef"
+# define HEXAB "0123456789ABCDEF"
 
 /*
 ** 1st part
@@ -34,10 +35,14 @@
 
 typedef struct	s_printf
 {
+	int 				j;
+	int					k;
+
+
 	int					i;
 	double				d;
 	int					u;
-	int					x;
+	unsigned int		x;
 	char				c;
 	long				p;
 	char				*str;
@@ -46,6 +51,7 @@ typedef struct	s_printf
 	char				*retu;
 	int					index;
 	int					sign;
+	int					lower;
 
 	int					cont;
 	int					zero;
@@ -65,7 +71,8 @@ void			ft_is_i(t_printf *pf, va_list ap);
 void			ft_is_p(t_printf *pf, va_list ap);
 void			ft_is_percent(t_printf *pf);
 void			ft_is_d(t_printf *pf, va_list ap);
-void			ft_is_c(t_printf *pf, va_list ap);
+void			ft_is_X(t_printf *pf, va_list ap);
+void			ft_is_x(t_printf *pf, va_list ap);
 void			ft_init_printf_flags(t_printf *pf);
 void			ft_conversions(t_printf *pf, va_list ap);
 /*
