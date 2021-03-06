@@ -117,7 +117,7 @@ void	ft_hexa(unsigned long n, t_printf *pf)
 	i = 1;
     nn = n;
 	if (!n)
-		pf->str = "0";
+		pf->str = ft_strdup("0");
 	else
 	{
 		while (nn/=16)
@@ -128,7 +128,6 @@ void	ft_hexa(unsigned long n, t_printf *pf)
 		{
 			if (pf->upper)
 			{
-				printf("%d", pf->upper);
 				pf->str[--i] = HEXAB[n % 16];
 			}
 			else
