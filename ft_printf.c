@@ -14,6 +14,9 @@
 
 void	ft_init_printf_flags(t_printf *pf)
 {
+	pf->j = 0;
+	pf->k = 0;
+
 	pf->point = 0;
 	pf->minus = 0;
 	pf->ast = 0;
@@ -22,6 +25,7 @@ void	ft_init_printf_flags(t_printf *pf)
 	pf->width = 0;
 	pf->precision = 0;
 	pf->sign = 0;
+	pf->lower = 0;
 }
 
 void	ft_save_ast(t_printf *pf, va_list ap)
@@ -72,7 +76,7 @@ void	ft_parse(t_printf *pf, va_list ap)
 {
 	if (ft_strchr(SPECIFIERS, pf->get_args[pf->index]))
 		ft_flags(pf, ap);
-	//printf("\nPreci = %d sign = %d widht = %d index = %d minus = %d point = %d zero = %d ast = %d\n", pf->precision,pf->sign, pf->width, pf->index, pf->minus, pf->point, pf->zero, pf->ast);
+	// printf("\nPreci = %d sign = %d widht = %d index = %d minus = %d point = %d zero = %d ast = %d\n", pf->precision,pf->sign, pf->width, pf->index, pf->minus, pf->point, pf->zero, pf->ast);
 	if (ft_strchr(CONVERSIONS, pf->get_args[pf->index]))
 		ft_conversions(pf, ap);
 }
