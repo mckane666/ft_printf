@@ -16,7 +16,6 @@ void	ft_init_printf_flags(t_printf *pf)
 {
 	pf->j = 0;
 	pf->k = 0;
-
 	pf->point = 0;
 	pf->minus = 0;
 	pf->ast = 0;
@@ -95,7 +94,7 @@ int		ft_printf(const char *format, ...)
 	{
 		if (format[pf.index] == '%')
 		{
-			if (format[++pf.index] == '%')//
+			if (format[++pf.index] == '%')
 				pf.sign = 1;
 			ft_parse(&pf, ap);
 		}

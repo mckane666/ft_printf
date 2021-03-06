@@ -41,9 +41,9 @@ void	ft_is_str(t_printf *pf, va_list ap)
 	if (!pf->str)
 		pf->str = "(null)";
 	pf->str_len += ft_strlen(pf->str);
-	if (((pf->width || !pf->width) && pf->precision < 0) || (!pf->point)) //
+	if (((pf->width || !pf->width) && pf->precision < 0) || (!pf->point))
 		pf->precision = pf->str_len;
-	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->point + 1 + pf->ast);
+	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->point + 1+ pf->ast);
 	while ((pf->str[pf->j] && pf->j < pf->precision) && pf->minus)
 		pf->retu[pf->k++] = pf->str[pf->j++];
 	while (pf->width-- > pf->precision - ((pf->precision > pf->str_len))
@@ -157,8 +157,9 @@ void	ft_is_p(t_printf *pf, va_list ap)
 }
 
 void	ft_is_x(t_printf *pf, va_list ap)
-{
-	pf->upper = 1;
+{	//k = 0;
+	//j = 0;
+	//pf->upper = 1;
 	if (pf->get_args[pf->index] == 'x')
 		pf->x = va_arg(ap, unsigned long);
 	ft_hexa(pf->x, pf);
@@ -170,7 +171,7 @@ void	ft_is_x(t_printf *pf, va_list ap)
 		pf->retu[pf->k++] = pf->str[pf->j++];
 	while (pf->width-- > pf->precision - ((pf->precision > pf->str_len))
 		|| (pf->str_len - pf->point++ < (pf->width--)))
-		pf->retu[pf->k++] = ' ';
+		pf->retu[pf->k++] = ZERO_NO[pf->zero];
 	while ((pf->str[pf->j] && pf->j < pf->precision) && !pf->minus)
 		pf->retu[pf->k++] = pf->str[pf->j++];
 	pf->retu[pf->k] = 0;
@@ -179,27 +180,3 @@ void	ft_is_x(t_printf *pf, va_list ap)
 	ft_init_printf_flags(pf);
 	free(pf->retu);
 }
-
-/*
-ft_minus(pf, ap, format[pf.index]);// "%-5.45s\n", "ola"
-if (ft_strchr(CONVERSION, *format))
-	printf("temos conversion\n");
-if (format[pf.index] == 's')
-{
-	pf.str = va_arg(ap, char *);
-	cont3 += ft_strlen(pf.str) - 1; //cont chars - 1 %
-	ft_putstr(pf.str);
-}
-else if (format[pf.index] == 'd')
-{
-	pf.i = va_arg(ap, int);
-	cont++;
-	ft_putstr(ft_itoa(pf.i));
-}
-else if (format[pf.index] == 'f')
-{
-	pf.d = va_arg(ap, double);
-	cont++;
-	ft_putstr(ft_ftoa(pf.d));
-}
-}*/
