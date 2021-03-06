@@ -126,8 +126,11 @@ void	ft_hexa(unsigned long n, t_printf *pf)
 		pf->str[i] = 0;
 		while (n)
 		{
-			if (!pf->lower)
+			if (pf->upper)
+			{
+				printf("%d", pf->upper);
 				pf->str[--i] = HEXAB[n % 16];
+			}
 			else
 				pf->str[--i] = HEXA[n % 16];
 			n/=16;
@@ -156,7 +159,7 @@ void	ft_is_p(t_printf *pf, va_list ap)
 
 void	ft_is_x(t_printf *pf, va_list ap)
 {
-	pf->lower = 1;
+	pf->upper = 1;
 	if (pf->get_args[pf->index] == 'x')
 		pf->x = va_arg(ap, unsigned long);
 	ft_hexa(pf->x, pf);

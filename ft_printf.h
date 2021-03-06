@@ -51,7 +51,7 @@ typedef struct	s_printf
 	char				*retu;
 	int					index;
 	int					sign;
-	int					lower;
+	int					upper;
 
 	int					cont;
 	int					zero;
