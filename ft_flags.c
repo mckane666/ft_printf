@@ -156,9 +156,16 @@ void	ft_is_p(t_printf *pf, va_list ap)
 	free(pf->retu);
 }
 
+void	ft_put_precision(t_printf *pf)
+{
+	while (pf->precision > pf->str_len++)
+		pf->retu[pf->k++] = ZERO_NO[(!pf->zero && !pf->minus || pf->str)];
+	while ((pf->str[pf->j] && pf->j <= pf->precision))
+		pf->retu[pf->k++] = pf->str[pf->j++];
+}
+
 void	ft_is_x(t_printf *pf, va_list ap)
-{	//k = 0;
-	//j = 0;
+{	
 	//pf->upper = 1;
 	if (pf->get_args[pf->index] == 'x')
 		pf->x = va_arg(ap, unsigned long);
@@ -167,13 +174,20 @@ void	ft_is_x(t_printf *pf, va_list ap)
 	if (((pf->width || !pf->width) && pf->precision < 0) || (!pf->point))
 		pf->precision = pf->str_len;
 	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->point + 1 + pf->ast);
-	while ((pf->str[pf->j] && pf->j < pf->precision) && pf->minus)
+	while (pf->width-- > pf->precision && !pf->minus)
+		pf->retu[pf->k++] = ' ';
+	//ft_put_precision(pf);
+	while (pf->precision > pf->str_len++)
+		pf->retu[pf->k++] = ZERO_NO[(!pf->zero && !pf->minus || pf->str)];
+	while ((pf->str[pf->j] && pf->j <= pf->precision))
 		pf->retu[pf->k++] = pf->str[pf->j++];
-	while (pf->width-- > pf->precision - ((pf->precision > pf->str_len))
-		|| (pf->str_len - pf->point++ < (pf->width--)))
-		pf->retu[pf->k++] = ZERO_NO[pf->zero];
-	while ((pf->str[pf->j] && pf->j < pf->precision) && !pf->minus)
-		pf->retu[pf->k++] = pf->str[pf->j++];
+	while (pf->width-- >= pf->precision && pf->minus)
+		pf->retu[pf->k++] = ' ';
+	// while (pf->width-- > pf->precision - ((pf->precision > pf->str_len))
+	// 	|| (pf->str_len - pf->point++ < (pf->width--)))
+	// 	pf->retu[pf->k++] = ZERO_NO[pf->zero];
+	// while ((pf->str[pf->j] && pf->j <= pf->precision) && !pf->minus)
+	// 	pf->retu[pf->k++] = pf->str[pf->j++];
 	pf->retu[pf->k] = 0;
 	pf->cont += ft_strlen(pf->retu);
 	ft_putstr(pf->retu);
