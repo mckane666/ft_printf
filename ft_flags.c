@@ -171,21 +171,20 @@ void	ft_is_x(t_printf *pf, va_list ap)
 		pf->x = va_arg(ap, unsigned long);
 	ft_hexa(pf->x, pf);
 	pf->str_len = ft_strlen(pf->str);
-	if ((pf->precision <= 0 && pf->precision < pf->str_len))
-		pf->precision = pf->str_len - pf->point;
-	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->point + pf->ast);
+	if (((pf->width || !pf->width) && pf->precision < 0) || (!pf->point))
+		pf->precision = pf->str_len;
+	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->point + 1 + pf->ast);
 	while (pf->width-- > pf->precision && !pf->minus)
-		pf->retu[pf->k++] = ZERO_NO[(pf->zero && !pf->minus) && pf->precision > pf->width && !pf->point];
+		pf->retu[pf->k++] = ' ';
 	ft_put_precision(pf);
 	while (pf->width-- >= pf->precision && pf->minus)
-		pf->retu[pf->k++] = ZERO_NO[(pf->zero && !pf->minus) && pf->precision > pf->width && !pf->point];
+		pf->retu[pf->k++] = ' ';
 	pf->retu[pf->k] = 0;
+	free(pf->str);
 	pf->cont += ft_strlen(pf->retu);
 	ft_putstr(pf->retu);
-	free(pf->str);
-	free(pf->retu);
 	ft_init_printf_flags(pf);
-	
+	free(pf->retu);
 }
 
 void	ft_is_d(t_printf *pf, va_list ap)
