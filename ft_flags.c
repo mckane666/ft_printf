@@ -6,7 +6,7 @@
 /*   By: jhenriqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/22 10:30:44 by jhenriqu          #+#    #+#             */
-/*   Updated: 2021/03/01 11:41:41 by jhenriqu         ###   ########.fr       */
+/*   Updated: 2021/03/09 12:19:12 by jhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,10 +175,10 @@ void	ft_is_x(t_printf *pf, va_list ap)
 		pf->precision = pf->str_len - pf->point;
 	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->point + pf->ast);
 	while (pf->width-- > pf->precision && !pf->minus)
-		pf->retu[pf->k++] = ZERO_NO[!pf->zero && !pf->minus];
+		pf->retu[pf->k++] = ZERO_NO[(pf->zero && !pf->minus) && pf->precision > pf->width && !pf->point];
 	ft_put_precision(pf);
 	while (pf->width-- >= pf->precision && pf->minus)
-		pf->retu[pf->k++] = ZERO_NO[!pf->zero && !pf->minus];
+		pf->retu[pf->k++] = ZERO_NO[(pf->zero && !pf->minus) && pf->precision > pf->width && !pf->point];
 	pf->retu[pf->k] = 0;
 	pf->cont += ft_strlen(pf->retu);
 	ft_putstr(pf->retu);
