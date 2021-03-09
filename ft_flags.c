@@ -20,8 +20,8 @@ void	ft_conversions(t_printf *pf, va_list ap)
 		ft_is_str(pf, ap);
 	else if (ft_strchr("p", pf->get_args[pf->index])) //
 		ft_is_p(pf, ap);
-	// else if (ft_strchr("d", pf->get_args[pf->index])) //
-	//  	ft_is_d(pf, ap);
+	else if (ft_strchr("d", pf->get_args[pf->index])) //
+	  	ft_is_d(pf, ap);
 	// else if (ft_strchr("i", pf->get_args[pf->index])) //
 	// 	ft_is_i(pf, ap);
 	// else if (ft_strchr("u", pf->get_args[pf->index])) //
@@ -187,27 +187,26 @@ void	ft_is_x(t_printf *pf, va_list ap)
 	free(pf->retu);
 }
 
-// // void	ft_is_d(t_printf *pf, va_list ap)
-// // {	
-// // 	if (pf->get_args[pf->index] == 'd')
-// // 		pf->i = va_arg(ap, int);
-// // 	pf->str = ft_itoa(pf->i);
-// // 	pf->str_len = ft_strlen(pf->str);
-// // 	if (((pf->width || !pf->width) && pf->precision < 0) || (!pf->point))
-// // 		pf->precision = pf->str_len;
-// // 	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->point + 1 + pf->ast);
-// // 	while (pf->width-- > pf->precision && !pf->minus)
-// // 		pf->retu[pf->k++] = ' ';
-// // 	while (pf->precision > pf->str_len++)
-// // 		pf->retu[pf->k++] = ZERO_NO[(!pf->zero && !pf->minus) || pf->str];
-// // 	while (pf->str[pf->j] && pf->j < pf->precision )
-// // 		pf->retu[pf->k++] = pf->str[pf->j++];
-// // 	while (pf->width-- >= pf->precision && pf->minus)
-// // 		pf->retu[pf->k++] = ' ';
-// // 	pf->retu[pf->k] = 0;
-// // 	pf->cont += ft_strlen(pf->retu);
-// // 	ft_putstr(pf->retu);
-// // 	ft_init_printf_flags(pf);
-// // 	free(pf->retu);
-// // 	free(pf->str);
-// // }
+void	ft_is_d(t_printf *pf, va_list ap)
+{	
+	if (pf->get_args[pf->index] == 'd')
+		pf->i = va_arg(ap, int);
+	pf->str = ft_itoa(pf->i);
+	pf->str_len = ft_strlen(pf->str);
+	if ((pf->precision >= 0 && pf->precision < pf->str_len - 1))
+		pf->precision = pf->str_len;
+	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->point + 1 + pf->ast);
+	while (pf->width-- > pf->precision && !pf->minus)
+		pf->retu[pf->k++] = ' ';
+	while (pf->precision > pf->str_len++)
+		pf->retu[pf->k++] = ZERO_NO[(!pf->zero && !pf->minus) || pf->str];
+	while (pf->str[pf->j] && pf->j < pf->precision )
+		pf->retu[pf->k++] = pf->str[pf->j++];
+	while (pf->width-- >= pf->precision && pf->minus)
+		pf->retu[pf->k++] = ' ';
+	pf->retu[pf->k] = 0;
+	pf->cont += ft_strlen(pf->retu);
+	ft_putstr(pf->retu);
+	ft_init_printf_flags(pf);
+	free(pf->retu);
+}
