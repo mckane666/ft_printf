@@ -171,7 +171,7 @@ void	ft_is_x(t_printf *pf, va_list ap)
 		pf->x = va_arg(ap, unsigned long);
 	ft_hexa(pf->x, pf);
 	pf->str_len = ft_strlen(pf->str);
-	if (pf->precision >= 0 && pf->precision < pf->str_len)
+	if ((pf->precision >= 0 && pf->precision < pf->str_len - 1))
 		pf->precision = pf->str_len;
 	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->precision + pf->point + 1 + pf->ast);
 	while (pf->width-- > pf->precision && !pf->minus)
