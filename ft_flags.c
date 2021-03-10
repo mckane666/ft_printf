@@ -18,18 +18,16 @@ void	ft_conversions(t_printf *pf, va_list ap)
 		ft_is_c(pf, ap);
 	else if (ft_strchr("s", pf->get_args[pf->index]))
 		ft_is_str(pf, ap);
-	else if (ft_strchr("p", pf->get_args[pf->index])) //
+	else if (ft_strchr("p", pf->get_args[pf->index]))
 		ft_is_p(pf, ap);
-	else if (ft_strchr("d", pf->get_args[pf->index])) //
+	else if (ft_strchr("d", pf->get_args[pf->index]))
 	  	ft_is_d(pf, ap);
 	// else if (ft_strchr("i", pf->get_args[pf->index])) //
 	// 	ft_is_i(pf, ap);
 	// else if (ft_strchr("u", pf->get_args[pf->index])) //
 	// 	ft_is_u(pf, ap);
-	else if (ft_strchr("x", pf->get_args[pf->index])) //
+	else if (ft_strchr("x", pf->get_args[pf->index]) || ft_strchr("X", pf->get_args[pf->index]))
 	 	ft_is_x(pf, ap);
-	// else if (ft_strchr("X", pf->get_args[pf->index])) //
-	// 	ft_is_X(pf, ap);
 	else if (ft_strchr("%", pf->get_args[pf->index])) //
 	 	ft_is_percent(pf);
 }
@@ -127,9 +125,7 @@ void	ft_hexa(unsigned long n, t_printf *pf)
 		while (n)
 		{
 			if (pf->upper)
-			{
 				pf->str[--i] = HEXAB[n % 16];
-			}
 			else
 				pf->str[--i] = HEXA[n % 16];
 			n/=16;
@@ -166,8 +162,9 @@ void	ft_put_precision(t_printf *pf)
 
 void	ft_is_x(t_printf *pf, va_list ap)
 {	
-	//pf->upper = 1;
-	if (pf->get_args[pf->index] == 'x')
+	if (pf->get_args[pf->index] == 'X')
+		pf->upper = 1;
+	if (pf->get_args[pf->index] == 'x' || pf->get_args[pf->index] == 'X')
 		pf->x = va_arg(ap, unsigned long);
 	ft_hexa(pf->x, pf);
 	pf->str_len = ft_strlen(pf->str);
@@ -194,20 +191,23 @@ void	ft_is_d(t_printf *pf, va_list ap)
 	pf->str = ft_itoa(pf->i);
 	pf->str_len = ft_strlen(pf->str);
 	if (pf->str[0] == '-')
+	{
 		pf->j++;
+		pf->precision++;
+	}
 	if ((pf->precision >= 0 && pf->precision < pf->str_len - pf->point))
 		pf->precision = pf->str_len;
 	pf->retu = ft_calloc(sizeof(char), pf->str_len + pf->width + pf->precision);
-	while (pf->width-- > pf->precision && !pf->minus)
+	while (pf->width-- > pf->precision && !pf->minus && (pf->str[0] != '-'))
 		pf->retu[pf->k++] = ' ';
 	while (pf->precision > pf->str_len++)
 		pf->retu[pf->k++] = ZERO_NO[(pf->zero && !pf->minus) || pf->str];
 	while (pf->str[pf->j] && pf->j < pf->precision)
 		pf->retu[pf->k++] = pf->str[pf->j++];
-	while (pf->width-- >= pf->precision && pf->minus)
+	while (pf->width-- >= pf->precision && pf->minus && (pf->str[0] != '-'))
 		pf->retu[pf->k++] = ' ';
 	pf->retu[pf->k] = 0;
-	if (pf->str[0] == '-')
+	if (pf->str[0] == '-' && pf->precision)
 		pf->retu = ft_strjoin("-", pf->retu);
 	free(pf->str);
 	pf->cont += ft_strlen(pf->retu);
