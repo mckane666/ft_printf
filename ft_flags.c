@@ -157,7 +157,7 @@ void	ft_is_p(t_printf *pf, va_list ap)
 void	ft_put_precision(t_printf *pf)
 {
 	while (pf->precision > pf->str_len++)
-		pf->retu[pf->k++] = ZERO_NO[(pf->zero && !pf->minus) || pf->str];
+		pf->retu[pf->k++] = '0';
 	while ((pf->str[pf->j] && pf->j < pf->precision))
 		pf->retu[pf->k++] = pf->str[pf->j++];
 }
